@@ -22,6 +22,7 @@
       "min": 7,
       "max": 7,
       "default": "v0.21.0",
+      "required": false,
       "env_variable": "TAG"
     },
     {
@@ -71,7 +72,8 @@
       "label": "Server URL",
       "min": 20,
       "max": 90,
-      "default": "http://localhost:3000",
+      "required": true,
+      "placeholder": "http://localhost:3000",
       "env_variable": "SERVER_URL"
     },
     {
@@ -84,12 +86,14 @@
       "type": "text",
       "label": "Storage",
       "default": "local",
+      "required": true,
       "env_variable": "STORAGE_TYPE"
     },
     {
       "type": "text",
       "label": "Message Queue type",
       "default": "pg-boss",
+      "required": true,
       "env_variable": "MESSAGE_QUEUE_TYPE"
     }
   ],
