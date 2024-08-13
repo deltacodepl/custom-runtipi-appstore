@@ -1,0 +1,157 @@
+version: '3.9'
+
+services:
+#  version: "3.9"
+#name: twenty
+  # change-vol-ownership:
+  #   image: ubuntu
+  #   container_name: ubuntu_vol
+  #   user: root
+  #   volumes:
+  #     - server-local-data:/tmp/server-local-data
+  #     - docker-data:/tmp/docker-data
+  #   command: >
+  #     bash -c "
+  #     chown -R 1000:1000 /tmp/server-local-data
+  #     && chown -R 1000:1000 /tmp/docker-data"
+
+  server:
+    image: twentycrm/twenty:${TAG}
+    container_name: twenty
+    tty: true
+    stdin_open: true
+    volumes:
+      - ${APP_DATA_DIR}/data/server-local-data:/app/packages/twenty-server/${STORAGE_LOCAL_PATH:-.local-storage}
+      - ${APP_DATA_DIR}/data/docker-data:/app/docker-data
+    ports:
+      - '${APP_PORT}:3000'
+    environment:
+      PORT: 3000
+      #PG_DATABASE_URL: postgres://twenty:twenty@${PG_DATABASE_HOST}/default
+      PG_DATABASE_URL: postgresql://twenty:${DB_PASSWORD}@twenty-db:5432/default
+      DATABASE_TYPE: postgresql
+      # HASH_SALT: ${HASH_SALT}
+      SERVER_URL: ${SERVER_URL}
+      FRONT_BASE_URL: ${FRONT_BASE_URL:-$SERVER_URL}
+      MESSAGE_QUEUE_TYPE: ${MESSAGE_QUEUE_TYPE}
+
+      ENABLE_DB_MIGRATIONS: "true"
+
+      SIGN_IN_PREFILLED: ${SIGN_IN_PREFILLED}
+      STORAGE_TYPE: ${STORAGE_TYPE}
+      STORAGE_S3_REGION: ${STORAGE_S3_REGION}
+      STORAGE_S3_NAME: ${STORAGE_S3_NAME}
+      STORAGE_S3_ENDPOINT: ${STORAGE_S3_ENDPOINT}
+      ACCESS_TOKEN_SECRET: ${ACCESS_TOKEN_SECRET}
+      LOGIN_TOKEN_SECRET: ${LOGIN_TOKEN_SECRET}
+      REFRESH_TOKEN_SECRET: ${REFRESH_TOKEN_SECRET}
+      FILE_TOKEN_SECRET: ${FILE_TOKEN_SECRET}
+    depends_on:
+      #change-vol-ownership:
+      #  condition: service_completed_successfully
+      twenty-db:
+        condition: service_healthy
+    # healthcheck:
+    #   test: curl --fail http://localhost:3000/healthz
+    #   interval: 5s
+    #   timeout: 5s
+    #   retries: 10
+    restart: unless-stopped
+    networks:
+      - tipi_main_network
+    labels:
+      # Main
+      traefik.enable: true
+      traefik.http.middlewares.twenty-web-redirect.redirectscheme.scheme: https
+      traefik.http.services.twenty.loadbalancer.server.port: 3000
+      # Web
+      traefik.http.routers.twenty-insecure.rule: Host(`${APP_DOMAIN}`)
+      traefik.http.routers.twenty-insecure.entrypoints: web
+      traefik.http.routers.twenty-insecure.service: twenty
+      traefik.http.routers.twenty-insecure.middlewares: twenty-web-redirect
+      # Websecure
+      traefik.http.routers.twenty.rule: Host(`${APP_DOMAIN}`)
+      traefik.http.routers.twenty.entrypoints: websecure
+      traefik.http.routers.twenty.service: twenty
+      traefik.http.routers.twenty.tls.certresolver: myresolver
+      # Local domain
+      traefik.http.routers.twenty-local-insecure.rule: Host(`twenty.${LOCAL_DOMAIN}`)
+      traefik.http.routers.twenty-local-insecure.entrypoints: web
+      traefik.http.routers.twenty-local-insecure.service: twenty
+      traefik.http.routers.twenty-local-insecure.middlewares: twenty-web-redirect
+      # Local domain secure
+      traefik.http.routers.twenty-local.rule: Host(`twenty.${LOCAL_DOMAIN}`)
+      traefik.http.routers.twenty-local.entrypoints: websecure
+      traefik.http.routers.twenty-local.service: twenty
+      traefik.http.routers.twenty-local.tls: true
+      runtipi.managed: true
+
+  worker:
+    image: twentycrm/twenty:${TAG}
+    container_name: twenty_worker
+    tty: true
+    stdin_open: true
+    command: ["yarn", "worker:prod"]
+    environment:
+      PG_DATABASE_URL: postgresql://twenty:${DB_PASSWORD}@twenty-db:5432/default
+      SERVER_URL: ${SERVER_URL}
+      FRONT_BASE_URL: ${FRONT_BASE_URL:-$SERVER_URL}
+      MESSAGE_QUEUE_TYPE: ${MESSAGE_QUEUE_TYPE}
+
+      ENABLE_DB_MIGRATIONS: "false" # it already runs on the server
+
+      STORAGE_TYPE: ${STORAGE_TYPE}
+      STORAGE_S3_REGION: ${STORAGE_S3_REGION}
+      STORAGE_S3_NAME: ${STORAGE_S3_NAME}
+      STORAGE_S3_ENDPOINT: ${STORAGE_S3_ENDPOINT}
+      ACCESS_TOKEN_SECRET: ${ACCESS_TOKEN_SECRET}
+      LOGIN_TOKEN_SECRET: ${LOGIN_TOKEN_SECRET}
+      REFRESH_TOKEN_SECRET: ${REFRESH_TOKEN_SECRET}
+      FILE_TOKEN_SECRET: ${FILE_TOKEN_SECRET}
+    networks:
+      - tipi_main_network
+    depends_on:
+      twenty-db:
+        condition: service_healthy
+      server:
+        condition: service_healthy
+    restart: always
+
+  twenty-db:
+    image: twentycrm/twenty-postgres:latest
+    container_name: twenty-db
+    volumes:
+      - ${APP_DATA_DIR}/data/db-data:/bitnami/postgresql
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD}
+    networks:
+      - tipi_main_network
+    healthcheck:
+      test: pg_isready -U twenty -d default
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: on-failure
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: unless-stopped
+    ports:
+      - "8888:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: hello@retryjoin.pl
+      PGADMIN_DEFAULT_PASSWORD: '#KOTapflo24'
+    volumes:
+      - ${APP_DATA_DIR}/data/pgadmin-data:/var/lib/pgadmin
+    networks:
+      - tipi_main_network
+    labels:
+      runtipi.managed. true
+
+
+# volumes:
+#   docker-data:
+#   db-data:
+#   server-local-data:
+#   pgadmin-data:

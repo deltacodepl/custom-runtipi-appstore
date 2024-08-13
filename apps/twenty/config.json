@@ -1,0 +1,97 @@
+{
+  "$schema": "../schema.json",
+  "name": "Twenty",
+  "available": true,
+  "exposable": true,
+  "port": 9024,
+  "id": "twenty",
+  "tipi_version": 24,
+  "version": "0.21.0",
+  "categories": [
+    "utilities"
+  ],
+  "description": "Twenty is an open-source CRM",
+  "short_desc": "CRM dashboard",
+  "author": "",
+  "source": "https://github.com/twentyhq/twenty",
+  "website": "https://twenty.com",
+  "form_fields": [
+    {
+      "type": "text",
+      "label": "CRM Version",
+      "min": 7,
+      "max": 7,
+      "default": "v0.21.0",
+      "env_variable": "TAG"
+    },
+    {
+      "type": "random",
+      "label": "Database password",
+      "min": 20,
+      "max": 30,
+      "env_variable": "DB_PASSWORD"
+    },
+    {
+      "type": "random",
+      "label": "Postgres Admin password",
+      "min": 15,
+      "max": 20,
+      "env_variable": "POSTGRES_ADMIN_PASSWORD"
+    },
+    {
+      "type": "random",
+      "label": "Access Token",
+      "min": 45,
+      "max": 45,
+      "env_variable": "ACCESS_TOKEN_SECRET"
+    },
+    {
+      "type": "random",
+      "label": "Login Token",
+      "min": 45,
+      "max": 45,
+      "env_variable": "LOGIN_TOKEN_SECRET"
+    },
+    {
+      "type": "random",
+      "label": "Refresh Token",
+      "min": 45,
+      "max": 45,
+      "env_variable": "REFRESH_TOKEN_SECRET"
+    },
+    {
+      "type": "random",
+      "label": "File Token",
+      "min": 45,
+      "max": 45,
+      "env_variable": "FILE_TOKEN_SECRET"
+    },
+    {
+      "type": "text",
+      "label": "Server URL",
+      "min": 20,
+      "max": 90,
+      "default": "http://localhost:3000",
+      "env_variable": "SERVER_URL"
+    },
+    {
+      "type": "boolean",
+      "label": "Sign in prefilled?",
+      "default": true,
+      "env_variable": "SIGN_IN_PREFILLED"
+    },
+    {
+      "type": "text",
+      "label": "Storage",
+      "default": "local",
+      "env_variable": "STORAGE_TYPE"
+    },
+    {
+      "type": "text",
+      "label": "Message Queue type",
+      "default": "pg-boss",
+      "env_variable": "MESSAGE_QUEUE_TYPE"
+    }
+  ],
+  "supported_architectures": ["amd64"]
+}
