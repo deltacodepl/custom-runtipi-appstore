@@ -51,11 +51,11 @@ services:
       #  condition: service_completed_successfully
       twenty-db:
         condition: service_healthy
-    healthcheck:
-      test: curl --fail http://localhost:3000/healthz
-      interval: 5s
-      timeout: 5s
-      retries: 10
+    # healthcheck:
+    #   test: curl --fail http://localhost:3000/healthz
+    #   interval: 5s
+    #   timeout: 5s
+    #   retries: 10
     restart: unless-stopped
     networks:
       - tipi_main_network
@@ -114,8 +114,8 @@ services:
       twenty-db:
         condition: service_healthy
       server:
-        condition: service_healthy
-    restart: always
+        #condition: service_healthy
+    restart: unless-stopped
     labels:
       runtipi.managed: true
 
