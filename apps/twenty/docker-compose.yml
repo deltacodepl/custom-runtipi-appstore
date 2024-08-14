@@ -111,9 +111,9 @@ services:
     networks:
       - tipi_main_network
     depends_on:
-      twenty-db:
+    - server
+    -  twenty-db:
         condition: service_healthy
-      server:
         #condition: service_healthy
     restart: unless-stopped
     labels:
