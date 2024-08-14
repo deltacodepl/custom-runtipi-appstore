@@ -22,7 +22,7 @@
       "min": 7,
       "max": 7,
       "default": "v0.21.0",
-      "required": false,
+      "required": true,
       "env_variable": "TAG"
     },
     {

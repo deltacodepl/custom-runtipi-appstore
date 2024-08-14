@@ -116,6 +116,8 @@ services:
       server:
         condition: service_healthy
     restart: always
+    labels:
+      runtipi.managed: true
 
   twenty-db:
     image: twentycrm/twenty-postgres:latest
@@ -134,13 +136,15 @@ services:
       timeout: 5s
       retries: 10
     restart: on-failure
+    labels:
+      runtipi.managed: true
 
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin4_container
     restart: unless-stopped
     ports:
-      - "8888:80"
+      - "8889:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: hello@retryjoin.pl
       PGADMIN_DEFAULT_PASSWORD: '#KOTapflo24'
