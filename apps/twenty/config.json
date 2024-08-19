@@ -19,7 +19,7 @@
     {
       "type": "text",
       "label": "CRM Version",
-      "min": 7,
+      "min": 5,
       "max": 7,
       "default": "latest",
       "required": true,
