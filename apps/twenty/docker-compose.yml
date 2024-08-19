@@ -28,7 +28,7 @@ services:
     environment:
       PORT: 3000
       #PG_DATABASE_URL: postgres://twenty:twenty@${PG_DATABASE_HOST}/default
-      PG_DATABASE_URL: postgres://twenty:${DB_PASSWORD}@twenty-db:5432/default
+      PG_DATABASE_URL: postgres://twenty:twenty@twenty-db:5432/default
       DATABASE_TYPE: postgresql
       # HASH_SALT: ${HASH_SALT}
       SERVER_URL: ${SERVER_URL}
