@@ -29,13 +29,13 @@
       "type": "random",
       "label": "Database password",
       "min": 20,
-      "max": 30,
+      "max": 20,
       "env_variable": "DB_PASSWORD"
     },
     {
       "type": "random",
       "label": "Postgres Admin password",
-      "min": 15,
+      "min": 20,
       "max": 20,
       "env_variable": "POSTGRES_ADMIN_PASSWORD"
     },
