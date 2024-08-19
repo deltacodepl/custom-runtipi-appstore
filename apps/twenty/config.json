@@ -76,6 +76,13 @@
       "env_variable": "SERVER_URL"
     },
     {
+      "type": "text",
+      "label": "React Base URL",
+      "default": "http://10.0.20.58:9024",
+      "required": true,
+      "env_variable": "REACT_APP_SERVER_BASE_URL"
+    },
+    {
       "type": "boolean",
       "label": "Sign in prefilled?",
       "default": true,
