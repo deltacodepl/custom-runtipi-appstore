@@ -2,18 +2,18 @@ version: '3.9'
 
 services:
 #  version: "3.9"
-#name: twenty
-  # change-vol-ownership:
-  #   image: ubuntu
-  #   container_name: ubuntu_vol
-  #   user: root
-  #   volumes:
-  #     - server-local-data:/tmp/server-local-data
-  #     - docker-data:/tmp/docker-data
-  #   command: >
-  #     bash -c "
-  #     chown -R 1000:1000 /tmp/server-local-data
-  #     && chown -R 1000:1000 /tmp/docker-data"
+  name: twenty_vol
+  change-vol-ownership:
+    image: ubuntu
+    container_name: ubuntu_vol
+    user: root
+    volumes:
+      - ${APP_DATA_DIR}/data/server-local-data:/tmp/server-local-data
+      - ${APP_DATA_DIR}/data/docker-data:/tmp/docker-data
+    command: >
+      bash -c "
+      chown -R 1000:1000 /tmp/server-local-data
+      && chown -R 1000:1000 /tmp/docker-data"  
 
   server:
     image: twentycrm/twenty:${TAG}
