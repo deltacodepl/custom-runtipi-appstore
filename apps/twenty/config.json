@@ -1,15 +1,13 @@
 {
   "$schema": "../schema.json",
   "name": "Twenty",
+  "port": 9024,
   "available": true,
   "exposable": true,
-  "port": 9024,
   "id": "twenty",
   "tipi_version": 24,
-  "version": "0.21.0",
-  "categories": [
-    "utilities"
-  ],
+  "version": "v0.21.0",
+  "categories": ["utilities"],
   "description": "Twenty is an open-source CRM",
   "short_desc": "CRM dashboard",
   "author": "",
@@ -72,8 +70,9 @@
       "label": "Server URL",
       "min": 20,
       "max": 90,
+      "default": "http://192.168.1.15:9024",
       "required": true,
-      "placeholder": "http://localhost:3000",
+      "placeholder": "http://localhost:9024",
       "env_variable": "SERVER_URL"
     },
     {
