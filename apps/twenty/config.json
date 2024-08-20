@@ -78,7 +78,7 @@
     {
       "type": "text",
       "label": "React Base URL",
-      "default": "http://localhost:9024",
+      "default": "http://192.168.1.15:9024",
       "required": true,
       "env_variable": "REACT_APP_SERVER_BASE_URL"
     },
