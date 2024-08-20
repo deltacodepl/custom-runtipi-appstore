@@ -17,7 +17,7 @@
     {
       "type": "text",
       "label": "CRM Version",
-      "min": 5,
+      "min": 3,
       "max": 7,
       "default": "latest",
       "placeholder": "0.23",
