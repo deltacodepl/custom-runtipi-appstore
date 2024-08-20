@@ -20,7 +20,7 @@
       "min": 3,
       "max": 7,
       "default": "latest",
-      "placeholder": "0.23",
+      "placeholder": "v0.23",
       "required": true,
       "env_variable": "TAG"
     },
