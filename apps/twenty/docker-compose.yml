@@ -119,7 +119,7 @@ services:
       runtipi.managed: true
 
   twenty-db:
-    image: twentycrm/twenty-postgres:${TAG}
+    image: twentycrm/twenty-postgres:v${TAG}
     container_name: twenty-db
     volumes:
       - ${APP_DATA_DIR}/data/db-data:/bitnami/postgresql
